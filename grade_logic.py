@@ -27,15 +27,15 @@ class Grades(QMainWindow, Ui_MainWindow):
             if self.click:
 
                 name = self.student_name.text().strip()
-                attempts = int(self.num_attempts.text().strip())
+                attempts = self.num_attempts.text().strip()
 
                 if name == "":
                     return self.main_label.setText("Please enter name")
                 if attempts == "":
                     return self.main_label.setText("Please enter number of attempts")
-
+                attempts = int(attempts)
                 for letter in name:
-                    if not letter.isalpha() or letter.isspace():
+                    if not (letter.isalpha() or letter.isspace()):
                         return self.main_label.setText("Please enter letters in name box")
 
 
@@ -68,7 +68,7 @@ class Grades(QMainWindow, Ui_MainWindow):
                         final_score.append(0)
 
 
-                best_grade = max(final_score)
+                best_grade = max(final_score, default = 0)
 
                 header = ["Student Name", "Best grade", "Score 1", "Score 2", "Score 3", "Score 4"]
 
@@ -96,7 +96,4 @@ class Grades(QMainWindow, Ui_MainWindow):
             entry.hide()
         for label in [self.score1_label, self.score2_label, self.score3_label, self.score4_label]:
             label.hide()
-
-
-
 
