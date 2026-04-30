@@ -3,28 +3,33 @@ from gui import *
 import csv
 import os
 class Grades(QMainWindow, Ui_MainWindow):
-    def __init__(self):
+
+    def __init__(self) -> None:
+        """
+        Sets up lists of entry lists to simplify process of showing and hiding
+        """
         super().__init__()
         self.setupUi(self)
 
-        self.score1_label.hide()
-        self.score2_label.hide()
-        self.score3_label.hide()
-        self.score4_label.hide()
 
-        self.score1_entry.hide()
-        self.score2_entry.hide()
-        self.score3_entry.hide()
-        self.score4_entry.hide()
+        self.__entry = [self.score1_entry, self.score2_entry, self.score3_entry, self.score4_entry]
+        self.__label = [self.score1_label, self.score2_label, self.score3_label, self.score4_label]
 
-        self.click = True
+        [a.hide() for a in self.__entry]
+        [a.hide() for a in self.__label]
+
+        self.__click = True
 
         self.submit.clicked.connect(lambda: self.grade())
 
-    def grade(self):
-
+    def grade(self) -> None:
+        """
+        Takes student info checks and unhides # of attempts
+        after first submit it will check the scores and write to csv file
+        :return: None
+        """
         try:
-            if self.click:
+            if self.__click:
 
                 name = self.student_name.text().strip()
                 attempts = self.num_attempts.text().strip()
@@ -42,15 +47,13 @@ class Grades(QMainWindow, Ui_MainWindow):
                 if not 1<= attempts <=4:
                     return self.main_label.setText("Please enter number in range 1-4")
 
-                entry = [self.score1_entry, self.score2_entry, self.score3_entry, self.score4_entry]
-                label = [self.score1_label, self.score2_label, self.score3_label, self.score4_label]
 
-                for a in range(attempts):       #used Ai  to simplify showing entry boxes and labels
-                    entry[a].show()
-                    label[a].show()
+                for a in range(attempts):
+                    self.__entry[a].show()
+                    self.__label[a].show()
 
                 self.main_label.setText("Enter scores between 0-100 and submit")
-                self.click = False
+                self.__click = False
             else:
                 name = self.student_name.text().strip()
                 grade_list = [self.score1_entry.text().strip(), self.score2_entry.text().strip(), self.score3_entry.text().strip(), self.score4_entry.text().strip()]
@@ -87,13 +90,17 @@ class Grades(QMainWindow, Ui_MainWindow):
         except ValueError:
             return self.main_label.setText("Please enter number 1-4")
 
-    def reset(self):
-        self.click = True
+    def reset(self)-> None:
+        """
+        Resets all score entry boxes and labels ready for new input
+        :return: None
+        """
+        self.__click = True
         self.student_name.clear()
         self.num_attempts.clear()
-        for entry in [self.score1_entry, self.score2_entry, self.score3_entry, self.score4_entry]:
+        for entry in self.__entry:
             entry.clear()
             entry.hide()
-        for label in [self.score1_label, self.score2_label, self.score3_label, self.score4_label]:
+        for label in self.__label:
             label.hide()
 
