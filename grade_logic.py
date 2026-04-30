@@ -7,7 +7,7 @@ class Grades(QMainWindow, Ui_MainWindow):
     def __init__(self) -> None:
         """
         Sets up lists of entry lists to simplify process of showing and hiding
-        Used ai to help simplify hiding and showing entry boxes and labels
+        Used AI to help simplify hiding and showing entry boxes and labels
         :return: None
         """
         super().__init__()
